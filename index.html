@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="计算巢是阿里云开放给企业应用服务商的服务管理平台。服务商能够在计算巢上发布私有化部署服务，为其客户提供云上软件一键部署的能力；同时也支持全托管模式的服务，赋能服务商托管其客户资源。">
+  <title>CSGHub服务实例部署文档 - Aliyun 计算巢 x Demo</title>
+
+  <link rel="shortcut icon" href="img/favicon.ico">
+
+  <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.0/build/pure-min.css">
+  <link rel="stylesheet" href="css/theme.css">
+  
+
+  
+
+  
+  
+
+  
+    <script src="search/main.js"></script>
+  
+
+  
+
+  <script src="js/highlight.min.js"></script>
+  <script>hljs.highlightAll();</script>
+</head>
+
+<body>
+  <div class="container">
+    <div class="nav">
+      <div class="nav-inner">
+        <div class="logo">
+          <img src="./img/logo-2x.png">
+        </div>
+        <div class="nav-list">
+          <ul>
+          
+              <li><a href="#csghub">CSGHub服务实例部署文档</a></li>
+              
+                  <li><a href="#_1">概述</a></li>
+                  
+              
+                  <li><a href="#_2">计费说明</a></li>
+                  
+              
+                  <li><a href="#_3">部署架构</a></li>
+                  
+              
+                  <li><a href="#ram">RAM账号所需权限</a></li>
+                  
+              
+                  <li><a href="#_4">部署流程</a></li>
+                  
+                      <li class="li-h3"><a href="#_5">部署步骤</a></li>
+                  
+                      <li class="li-h3"><a href="#csghub_1">使用CSGHub</a></li>
+                  
+              
+          
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="content theme-github">
+      
+      <div class="content-inner">        
+        
+        <h1 id="csghub">CSGHub服务实例部署文档</h1>
+<h2 id="_1">概述</h2>
+<p>CSGHub 基座是一个大模型和数据集管理平台，为大模型应用研发团队提供全生命周期的模型、数据集、代码等资产管理能力。
+✓ 帮助用户治理LLM和LLM应用生命周期中涉及到的资产(数据集、模型文件、代码等)。
+✓ 用户可以通过Web界面、Git命令行或者自然语言Chatbot等方式，实现对模型文件、数据集、代码等资产的操作，包括上传、下载、存储、校验和分发。
+✓ 平台提供微服务子模块和标准化API，便于用户与自有系统集成。
+✓ 一键推理与微调的能力。
+✓ 模型自动同步能力。
+<img alt="CSGHub" src="images/csghub_framework.png" /></p>
+<h2 id="_2">计费说明</h2>
+<p>CSGHub在计算巢上的费用主要涉及：</p>
+<ul>
+<li>所选vCPU与内存规格</li>
+<li>系统盘类型及容量</li>
+<li>公网带宽</li>
+</ul>
+<p>计费方式包括：</p>
+<ul>
+<li>按量付费（小时）</li>
+<li>包年包月</li>
+</ul>
+<h2 id="_3">部署架构</h2>
+<p>一个CSGHub Server + K8S cluster</p>
+<h2 id="ram">RAM账号所需权限</h2>
+<p>CSGHub服务需要对ECS、VPC等资源进行访问和创建操作，若您使用RAM用户创建服务实例，需要在创建服务实例前，对使用的RAM用户的账号添加相应资源的权限。添加RAM权限的详细操作，请参见<a href="https://help.aliyun.com/document_detail/121945.html">为RAM用户授权</a>。所需权限如下表所示。</p>
+<table>
+<thead>
+<tr>
+<th>权限策略名称</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>AliyunECSFullAccess</td>
+<td>管理云服务器服务（ECS）的权限</td>
+</tr>
+<tr>
+<td>AliyunBSSReadOnlyAccess</td>
+<td>只读访问费用中心（BSS）的权限</td>
+</tr>
+<tr>
+<td>AliyunCSFullAccess</td>
+<td>管理容器服务（CS）的权限</td>
+</tr>
+<tr>
+<td>AliyunVPCFullAccess</td>
+<td>管理专有网络（VPC）的权限</td>
+</tr>
+<tr>
+<td>AliyunROSFullAccess</td>
+<td>管理资源编排服务（ROS）的权限</td>
+</tr>
+<tr>
+<td>AliyunSLBFullAccess</td>
+<td>管理负载均衡服务（SLB）的权限</td>
+</tr>
+<tr>
+<td>AliyunComputeNestUserFullAccess</td>
+<td>管理计算巢服务（ComputeNest）的用户侧权限</td>
+</tr>
+</tbody>
+</table>
+<h2 id="_4">部署流程</h2>
+<h3 id="_5">部署步骤</h3>
+<ol>
+<li>单击部署<a href="https://computenest.console.aliyun.com/service/instance/create/cn-hangzhou?type=user&amp;ServiceId=service-712413c5c35c47b3a42c">链接</a>，进入服务实例部署界面，根据界面提示，填写参数完成部署。</li>
+<li>填写csghub Server相关参数，并填写实例密码
+<img alt="CSGHub" src="images/csghub_server.png" /></li>
+<li>填写Kubernetes配置相关参数以及节点规模，并填写实例密码
+<img alt="CSGHub" src="images/csghub_server.png" /></li>
+<li>确认并创建实例</li>
+</ol>
+<h3 id="csghub_1">使用CSGHub</h3>
+<ol>
+<li>注册登录并上传模型
+<img alt="CSGHub" src="images/demo1.png" /></li>
+<li>选择模型并一键部署推理
+<img alt="CSGHub" src="images/demo2.png" /></li>
+<li>等待部署完成
+<img alt="CSGHub" src="images/demo3.png" /></li>
+<li>测试推理效果
+<img alt="CSGHub" src="images/demo4.png" /></li>
+</ol>
+        
+      </div>
+
+      <div class="copyrights">© 2009-2022 Aliyun.com 版权所有</div>
+    </div>
+  </div>
+  
+  <!--
+  MkDocs version      : 1.6.1
+  Docs Build Date UTC : 2024-10-17 08:14:08.067463+00:00
+  -->
+</body>
+</html>
