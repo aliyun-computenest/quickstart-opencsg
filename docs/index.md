@@ -24,15 +24,6 @@ CSGHub在计算巢上的费用主要涉及：
 - 按量付费（小时）
 - 包年包月
 
-目前提供如下实例：
-
-| 规格族 | vCPU与内存 | 系统盘 | 公网带宽 |
-| --- | --- | --- | --- |
-| ecs.r6.xlarge | 内存型r6，4vCPU 32GiB | ESSD云盘 200GiB PL0 | 固定带宽1Mbps |
-
-预估费用在创建实例时可实时看到。
-如需更多规格、其他服务（如集群高可用性要求、企业级支持服务等），请联系我们 [mailto:xx@xx.com](mailto:xx@xx.com)。
-
 ## 部署架构
 
 一个CSGHub Server + K8S cluster
@@ -45,8 +36,13 @@ CSGHub服务需要对ECS、VPC等资源进行访问和创建操作，若您使�
 | 权限策略名称 | 备注 |
 | --- | --- |
 | AliyunECSFullAccess | 管理云服务器服务（ECS）的权限 |
-| AliyunROSFullAccess | 管理资源编排服务（ROS）的权限 |
+| AliyunBSSReadOnlyAccess | 只读访问费用中心（BSS）的权限 |
+| AliyunCSFullAccess | 管理容器服务（CS）的权限 |
 | AliyunVPCFullAccess | 管理专有网络（VPC）的权限 |
+| AliyunROSFullAccess | 管理资源编排服务（ROS）的权限 |
+| AliyunSLBFullAccess | 管理负载均衡服务（SLB）的权限 |
+| AliyunComputeNestUserFullAccess | 管理计算巢服务（ComputeNest）的用户侧权限 |
+
 
 ## 部署流程
 
